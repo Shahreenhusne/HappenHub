@@ -6,6 +6,6 @@ description: string;
 date: string; // ISO
 location: string;
 category: Category;
-createdBy?: 'seed' | 'me';
+createdByUser?: boolean;
 attendees?: number; // for RSVP bonus
 }

@@ -1,5 +1,7 @@
+"use client";
 import Link from "next/link";
-import { headers } from "next/headers";
+import {  useSelector } from "react-redux";
+import {  RootState } from "../../store/store"; 
 
 interface Event {
   id: number;
@@ -12,11 +14,12 @@ interface Event {
 
 
 export default async function EventDetailsPage({ params }: { params: { id: string } }) {
-   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/events`, {
-    cache: "no-store",
-  });
-  const events: Event[] = await res.json();
-  const event = events.find((e) => e.id.toString() === params.id);
+  const { events } = useSelector(
+    (state: RootState) => state.events
+  );
+
+  
+  const event = events.find((e:any) => e.id.toString() === params.id);
 
   if (!event) {
     return <p className="text-red-500">Event not found.</p>;

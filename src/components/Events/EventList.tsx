@@ -2,31 +2,30 @@
 import { useEffect, useState } from "react";
 import SearchFilter from "./SearchFilter";
 import Link from "next/link";
-
-interface Event {
-  id: number;
-  title: string;
-  date: string;
-  location: string;
-  category: string;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../app/store/store"; 
+import { fetchEvents } from "../../app/store/features/eventsSlice";
 
 export default function EventList() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+
+  // ✅ Read state directly from Redux
+  const { events, loading, error } = useSelector(
+    (state: RootState) => state.events
+  );
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
 
   useEffect(() => {
-    async function fetchEvents() {
-      const res = await fetch("/api/events");
-      const data = await res.json();
-      setEvents(data);
-    }
-    fetchEvents();
-  }, []);
+    // ✅ Dispatch thunk instead of manual fetch
+    dispatch(fetchEvents());
+  }, [dispatch]);
 
   const filteredEvents = events.filter((event) => {
-    const matchesSearch = event.title.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = event.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
     const matchesCategory = category === "All" || event.category === category;
     return matchesSearch && matchesCategory;
   });
@@ -36,10 +35,19 @@ export default function EventList() {
       <h2 className="text-2xl font-bold mb-4">Upcoming Events</h2>
 
       {/* Filters */}
-       <SearchFilter search={search} setSearch={setSearch}  category={category} setCategory={setCategory}/>
+      <SearchFilter
+        search={search}
+        setSearch={setSearch}
+        category={category}
+        setCategory={setCategory}
+      />
+
+      {/* Loading / Error */}
+      {loading && <p>Loading events...</p>}
+      {error && <p className="text-red-500">{error}</p>}
 
       {/* Event List */}
-       {filteredEvents.length > 0 ? (
+      {filteredEvents.length >= 1 ? (
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {filteredEvents.map((event) => (
             <Link
@@ -57,7 +65,7 @@ export default function EventList() {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No events found.</p>
+        !loading && <p className="text-gray-500">No events found.</p>
       )}
     </div>
   );
