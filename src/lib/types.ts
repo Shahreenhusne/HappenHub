@@ -9,3 +9,14 @@ category: Category;
 createdByUser?: boolean;
 attendees?: number; // for RSVP bonus
 }
+
+export interface Event{
+id: number;
+title: string;
+description: string;
+date: string; // ISO
+location: string;
+category: string;
+createdByUser?: boolean;
+attendees?: number; // for RSVP bonus
+}

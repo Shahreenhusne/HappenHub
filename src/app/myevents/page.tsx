@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { deleteEvent, rsvpEvent, editEvent } from "../store/features/eventsSlice";
 import { useState } from "react";
+import { Event } from '@/lib/types';
 
 export default function MyEventsPage() {
   const events = useSelector((state: RootState) => state.events.events.filter((e) => e.createdByUser));
@@ -11,12 +12,12 @@ export default function MyEventsPage() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({ title: "", description: "", date: "", location: "", category: "" });
 
-  const startEdit = (event: any) => {
+  const startEdit = (event: Event) => {
     setEditingId(event.id);
     setEditForm(event);
   };
 
-  const handleEditChange = (e: any) => {
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
