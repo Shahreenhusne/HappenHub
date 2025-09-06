@@ -5,12 +5,14 @@ import { deleteEvent, rsvpEvent, editEvent } from "../store/features/eventsSlice
 import { useState } from "react";
 import { Event } from '@/lib/types';
 
+
+
 export default function MyEventsPage() {
   const events = useSelector((state: RootState) => state.events.events.filter((e) => e.createdByUser));
   const dispatch = useDispatch();
 
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [editForm, setEditForm] = useState({ title: "", description: "", date: "", location: "", category: "" });
+  const [editForm, setEditForm] = useState({ title: "", description: "", date: "", location: "", category: "" ,attendees: 0 });
 
   const startEdit = (event: Event) => {
     setEditingId(event.id);
@@ -22,7 +24,7 @@ export default function MyEventsPage() {
   };
 
   const saveEdit = () => {
-    dispatch(editEvent(editForm as any));
+    dispatch(editEvent(editForm as Event));
     setEditingId(null);
   };
 

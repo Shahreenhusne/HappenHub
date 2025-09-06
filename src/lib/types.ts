@@ -18,5 +18,5 @@ date: string; // ISO
 location: string;
 category: string;
 createdByUser?: boolean;
-attendees?: number; // for RSVP bonus
+attendees: number; // for RSVP bonus
 }
