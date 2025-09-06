@@ -37,7 +37,7 @@ export const fetchEvents = createAsyncThunk<Event[]>(
   "events/fetchEvents",
   async () => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3001"}/api/events`,
+      `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/events`,
       { cache: "no-store" }
     );
 

@@ -13,13 +13,13 @@ interface Event {
 }
 
 
-export default async function EventDetailsPage({ params }: { params: { id: string } }) {
+export default  function EventDetailsPage({ params }: { params: { id: string } }) {
   const { events } = useSelector(
     (state: RootState) => state.events
   );
 
   
-  const event = events.find((e:any) => e.id.toString() === params.id);
+  const event = events.find((e:Event) => e.id.toString() === params.id);
 
   if (!event) {
     return <p className="text-red-500">Event not found.</p>;
